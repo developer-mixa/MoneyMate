@@ -1,18 +1,157 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:background="#579DE8"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".presentation.MainActivity">
 
     <TextView
+        android:id="@+id/lastUpdateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center_horizontal"
+        android:text="Last update on Apr 25, 2016 at 2.40 PM"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <FrameLayout
+        android:id="@+id/reloadButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="32dp"
+        android:background="@drawable/reload_button_background"
+        app:cardCornerRadius="10dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/reloadIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginBottom="8dp"
+            app:srcCompat="@drawable/reload_button_icon" />
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/exchangeContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:id="@+id/inputContainer"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/inputExchange"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginBottom="24dp"
+                android:background="#FFFFFF">
+
+                <TextView
+                    android:id="@+id/inputExchangeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="USD"
+                    android:textColor="@color/background"
+                    android:textSize="24sp" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/inputValue"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="#FFFFFF">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:boxBackgroundMode="none"
+                    app:hintEnabled="false">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:inputType="number|numberDecimal"
+                        android:text="128.35"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/swapButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.2"
+            app:srcCompat="@drawable/swap_icon" />
+
+        <LinearLayout
+            android:id="@+id/outputContainer"
+            android:layout_width="64dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/outputExchange"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:layout_marginBottom="24dp"
+                android:background="#FFFFFF">
+
+                <TextView
+                    android:id="@+id/outputExchangeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="USD"
+                    android:textColor="@color/background"
+                    android:textSize="24sp" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/outputValue"
+                android:layout_width="match_parent"
+                android:layout_height="64dp"
+                android:background="#FFFFFF">
+
+                <TextView
+                    android:id="@+id/outputValueText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="3.513"
+                    android:textColor="@color/background"
+                    android:textSize="24sp" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

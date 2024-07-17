@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="background">#1C7ADF</color>
+    <color name="reload_button_background_default">#1D7EE8</color>
+    <color name="reload_button_background_tap">#2266B1</color>
 </resources>
