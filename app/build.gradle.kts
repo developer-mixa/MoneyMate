@@ -33,15 +33,27 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
+    implementation(libs.android.coreKtx)
+    implementation(libs.android.appCompat)
+    implementation(libs.android.constraintLayout)
+    implementation(libs.android.activityKtx)
+    implementation(libs.android.lifecycleRuntimeKtx)
+    implementation(libs.android.lifecycleViewModelKtx)
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation("com.google.android.material:material:1.12.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    implementation(libs.backend.okHttp)
+    implementation(libs.backend.okHttpInterceptor)
+    implementation(libs.backend.moshi)
+    implementation(libs.backend.retrofit)
+
+    implementation(libs.google.material)
+
+    testImplementation(libs.test.junit)
+    testImplementation(libs.test.mock)
+    testImplementation(libs.test.coroutines)
 }
