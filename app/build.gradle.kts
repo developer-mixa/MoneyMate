@@ -3,6 +3,11 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+fun getLocalPropertyKey(key: String): String {
+    return com.android.build.gradle.internal.cxx.configure
+        .gradleLocalProperties(rootDir).getProperty(key) ?: ""
+}
+
 android {
     namespace = "com.example.moneymate"
     compileSdk = 34
@@ -15,6 +20,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val exchangeRatesKey = getLocalPropertyKey("exchange_rates_key")
+
+        buildConfigField("String", "EXCHANGE_RATES_KEY", "\"$exchangeRatesKey\"")
     }
 
     buildTypes {
@@ -35,6 +44,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
