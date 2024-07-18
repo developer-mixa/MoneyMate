@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 fun getLocalPropertyKey(key: String): String {
@@ -46,6 +48,9 @@ android {
         viewBinding = true
         buildConfig = true
     }
+    hilt {
+        enableAggregatingTask = false
+    }
 }
 
 dependencies {
@@ -63,7 +68,14 @@ dependencies {
 
     implementation(libs.google.material)
 
+    implementation(libs.di.hilt)
+    kapt(libs.di.hiltCompiler)
+
     testImplementation(libs.test.junit)
     testImplementation(libs.test.mock)
     testImplementation(libs.test.coroutines)
+}
+
+kapt{
+    correctErrorTypes = true
 }

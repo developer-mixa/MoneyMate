@@ -11,8 +11,10 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+
     val okHttpVersion = "4.9.3"
     val retrofitVersion = "2.9.0"
+    val hiltVersion = "2.48"
 
     versionCatalogs {
         create("libs") {
@@ -30,6 +32,9 @@ dependencyResolutionManagement {
             library("backend.moshi", "com.squareup.retrofit2:converter-moshi:$retrofitVersion")
 
             library("google.material", "com.google.android.material:material:1.12.0")
+
+            library("di.hilt", "com.google.dagger:hilt-android:$hiltVersion")
+            library("di.hiltCompiler", "com.google.dagger:hilt-compiler:$hiltVersion")
 
             library("test.junit", "junit:junit:4.13.2")
             library("test.mock", "io.mockk:mockk:1.12.4")
