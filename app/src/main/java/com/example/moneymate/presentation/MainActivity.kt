@@ -24,8 +24,14 @@ class MainActivity : AppCompatActivity() {
         onClickListeners()
     }
 
-    private fun showCurrenciesMenu(view: View, currencyText: TextView){
-        val popupMenu = PopupMenu(this@MainActivity, view)
+    private fun onClickListeners() = with(binding) {
+        reloadButton.setOnClickListener { }
+        inputExchange.addShowingCurrenciesMenu(inputExchangeText)
+        outputExchange.addShowingCurrenciesMenu(outputExchangeText)
+    }
+
+    private fun View.addShowingCurrenciesMenu(currencyText: TextView) = setOnClickListener {
+        val popupMenu = PopupMenu(this@MainActivity, this)
         popupMenu.menu.apply {
             viewModel.getAllCurrencies().forEachIndexed { index, currency ->
                 add(Menu.NONE, index, Menu.CATEGORY_SYSTEM, currency)
@@ -38,13 +44,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         popupMenu.show()
-    }
-
-    private fun onClickListeners() = with(binding) {
-        reloadButton.setOnClickListener { }
-
-        inputExchange.setOnClickListener { view -> showCurrenciesMenu(view, inputExchangeText) }
-        outputExchange.setOnClickListener { view -> showCurrenciesMenu(view, outputExchangeText) }
     }
 
 }
