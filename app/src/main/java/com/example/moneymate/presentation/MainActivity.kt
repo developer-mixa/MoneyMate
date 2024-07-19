@@ -22,15 +22,28 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         onClickListeners()
+        observe()
     }
 
     private fun onClickListeners() = with(binding) {
-        reloadButton.setOnClickListener { }
-        inputExchange.addShowingCurrenciesMenu(inputExchangeText)
-        outputExchange.addShowingCurrenciesMenu(outputExchangeText)
+        reloadButton.setOnClickListener {
+            viewModel.convertCurrency(textInputText.text.toString().toFloat())
+        }
+        inputExchange.addShowingCurrenciesMenu { viewModel.setInputExchange(it) }
+        outputExchange.addShowingCurrenciesMenu { viewModel.setOutputExchange(it) }
     }
 
-    private fun View.addShowingCurrenciesMenu(currencyText: TextView) = setOnClickListener {
+    private fun observe() = with(binding){
+        viewModel.exchange.observe(this@MainActivity) {
+            inputExchangeText.text = it.inputExchange
+            outputExchangeText.text = it.outputExchange
+        }
+        viewModel.exchangeValue.observe(this@MainActivity) {
+            outputValueText.text = it.toString()
+        }
+    }
+
+    private fun View.addShowingCurrenciesMenu(onTap: (String) -> Unit) = setOnClickListener {
         val popupMenu = PopupMenu(this@MainActivity, this)
         popupMenu.menu.apply {
             viewModel.getAllCurrencies().forEachIndexed { index, currency ->
@@ -39,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         popupMenu.setOnMenuItemClickListener { item ->
-            currencyText.text = item.title
+            onTap(item.title.toString())
             true
         }
 

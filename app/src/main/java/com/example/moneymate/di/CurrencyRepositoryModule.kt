@@ -1,6 +1,6 @@
 package com.example.moneymate.di
 
-import com.example.moneymate.data.DefaultCurrencyRepository
+import com.example.moneymate.data.repositories.DefaultCurrencyRepository
 import com.example.moneymate.domain.CurrencyRepository
 import dagger.Binds
 import dagger.Module
