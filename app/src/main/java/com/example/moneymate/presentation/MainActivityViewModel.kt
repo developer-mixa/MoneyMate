@@ -11,6 +11,7 @@ import com.example.moneymate.presentation.models.Exchange
 import com.example.moneymate.presentation.models.PendingContainer
 import com.example.moneymate.presentation.models.SuccessContainer
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -25,6 +26,24 @@ class MainActivityViewModel @Inject constructor(
     private val _exchangeValue: MutableLiveData<Container<Float>> = MutableLiveData()
     val exchangeValue: LiveData<Container<Float>> = _exchangeValue
 
+    private val _allowCurrencies: MutableLiveData<Container<List<String>>> = MutableLiveData()
+    val allowCurrencies: LiveData<Container<List<String>>> = _allowCurrencies
+
+    init {
+        getAllowCurrencies()
+    }
+
+    private var convertCurrencyJob: Job? = null
+
+    fun getAllowCurrencies() = viewModelScope.launch {
+        try {
+            _allowCurrencies.value = PendingContainer()
+            _allowCurrencies.value = SuccessContainer(currencyRepository.getAllCurrencies())
+        }catch (e: Exception){
+            _allowCurrencies.value = ErrorContainer(e)
+        }
+    }
+
     fun setInputExchange(exchange: String) {
         _exchange.value = _exchange.value?.copy(inputExchange = exchange)
     }
@@ -33,22 +52,22 @@ class MainActivityViewModel @Inject constructor(
         _exchange.value = _exchange.value?.copy(outputExchange = exchange)
     }
 
-    fun getAllCurrencies(): List<String> {
-        return currencyRepository.getAllCurrencies()
-    }
-
     fun convertCurrency(value: Float) = viewModelScope.launch {
-        try {
-            _exchangeValue.value = PendingContainer()
+        convertCurrencyJob?.cancel()
 
-            val currency = currencyRepository.convertCurrency(
-                _exchange.value!!.inputExchange,
-                _exchange.value!!.outputExchange,
-                value
-            )
-            _exchangeValue.value = SuccessContainer(currency)
-        } catch (e: Exception) {
-            _exchangeValue.value = ErrorContainer(e)
+        convertCurrencyJob = launch {
+            try {
+                _exchangeValue.value = PendingContainer()
+
+                val currency = currencyRepository.convertCurrency(
+                    _exchange.value!!.inputExchange,
+                    _exchange.value!!.outputExchange,
+                    value
+                )
+                _exchangeValue.value = SuccessContainer(currency)
+            } catch (e: Exception) {
+                _exchangeValue.value = ErrorContainer(e)
+            }
         }
     }
 

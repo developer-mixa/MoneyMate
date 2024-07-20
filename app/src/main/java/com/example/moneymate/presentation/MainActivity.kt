@@ -4,13 +4,17 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import com.example.moneymate.R
 import com.example.moneymate.databinding.ActivityMainBinding
+import com.example.moneymate.databinding.ChooseCurrencyDialogBinding
 import com.example.moneymate.presentation.models.ErrorContainer
 import com.example.moneymate.presentation.models.PendingContainer
+import com.example.moneymate.presentation.models.SuccessContainer
 import com.example.moneymate.presentation.models.takeSuccess
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -21,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val viewModel by viewModels<MainActivityViewModel>()
+
+    private var currenciesAdapter: ArrayAdapter<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,6 +50,10 @@ class MainActivity : AppCompatActivity() {
             viewModel.convertCurrency(getInputValue())
         }
 
+        buttonRefresh.setOnClickListener {
+            viewModel.getAllowCurrencies()
+        }
+
         inputExchange.addShowingCurrenciesMenu { viewModel.setInputExchange(it) }
         outputExchange.addShowingCurrenciesMenu { viewModel.setOutputExchange(it) }
     }
@@ -53,6 +63,7 @@ class MainActivity : AppCompatActivity() {
             inputExchangeText.text = it.inputExchange
             outputExchangeText.text = it.outputExchange
         }
+
         viewModel.exchangeValue.observe(this@MainActivity) { result ->
 
             progressBar.isVisible = result is PendingContainer
@@ -64,22 +75,52 @@ class MainActivity : AppCompatActivity() {
                 showSnackbar(getString(R.string.currency_is_transferring))
             }
         }
+
+        viewModel.allowCurrencies.observe(this@MainActivity) { result ->
+
+            if(result is SuccessContainer){
+                setupAdapter(result.value)
+            }
+
+            mainProgressBar.isVisible = result is PendingContainer
+            errorContainer.isVisible = result is ErrorContainer
+            mainContainer.isVisible = result is SuccessContainer
+        }
+
     }
 
     private fun View.addShowingCurrenciesMenu(onTap: (String) -> Unit) = setOnClickListener {
-        val popupMenu = PopupMenu(this@MainActivity, this)
-        popupMenu.menu.apply {
-            viewModel.getAllCurrencies().forEachIndexed { index, currency ->
-                add(Menu.NONE, index, Menu.CATEGORY_SYSTEM, currency)
-            }
+        showCurrencyDialog(onTap)
+    }
+
+    private fun setupAdapter(currencies: List<String>){
+        currenciesAdapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_list_item_1,
+            android.R.id.text1,
+            currencies
+        )
+    }
+
+    private fun showCurrencyDialog(onTap: (String) -> Unit){
+        val dialogBinding = ChooseCurrencyDialogBinding.inflate(layoutInflater)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogBinding.root)
+            .setCancelable(true)
+            .create()
+
+        dialogBinding.currenciesListView.adapter = currenciesAdapter
+
+        dialogBinding.currenciesListView.setOnItemClickListener { _, _, position, _ ->
+            dialog.dismiss()
+            val currency = currenciesAdapter?.getItem(position) ?: return@setOnItemClickListener
+            onTap(currency)
         }
 
-        popupMenu.setOnMenuItemClickListener { item ->
-            onTap(item.title.toString())
-            true
-        }
+        dialogBinding.root.setOnClickListener { dialog.dismiss() }
 
-        popupMenu.show()
+        dialog.show()
     }
 
     private fun showSnackbar(message: String){

@@ -3,4 +3,6 @@
     <string name="load_text">loading...</string>
     <string name="error_try_to_refresh">Error: %1$s. Try to refresh!</string>
     <string name="currency_is_transferring">The currency is being transferred, wait a little...</string>
+    <string name="error_has_occured">Error has occured</string>
+    <string name="try_again">Try again...</string>
 </resources>

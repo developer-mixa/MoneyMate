@@ -5,6 +5,6 @@ data class Exchange(
     val outputExchange: String
 ){
     companion object{
-        val DEFAULT = Exchange("RUB", "USD")
+        val DEFAULT = Exchange("USD", "RUB")
     }
 }

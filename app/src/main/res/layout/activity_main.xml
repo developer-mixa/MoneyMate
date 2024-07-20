@@ -1,167 +1,232 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#579DE8"
-    android:gravity="center_horizontal"
+    android:backgroundTint="#579DE8"
     android:orientation="vertical"
     tools:context=".presentation.MainActivity">
 
-    <TextView
-        android:id="@+id/lastUpdateText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:gravity="center_horizontal"
-        android:text="Last update on Apr 25, 2016 at 2.40 PM"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
-
-    <FrameLayout
-        android:id="@+id/reloadButton"
+    <ProgressBar
+        android:id="@+id/mainProgressBar"
+        style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/reload_button_background"
-        app:cardCornerRadius="10dp">
-
-        <ImageView
-            android:id="@+id/reloadIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="18dp"
-            android:layout_marginBottom="8dp"
-            app:srcCompat="@drawable/reload_button_icon" />
-    </FrameLayout>
+        android:layout_gravity="center" />
 
     <LinearLayout
-        android:id="@+id/exchangeContainer"
+        android:id="@+id/errorContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="horizontal"
-        android:weightSum="1">
+        android:layout_height="match_parent"
+        android:layout_marginStart="4dp"
+        android:layout_marginEnd="4dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
 
-        <LinearLayout
-            android:id="@+id/inputContainer"
-            android:layout_width="64dp"
+        <TextView
+            android:id="@+id/textError"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.4"
-            android:orientation="vertical">
+            android:layout_marginBottom="4dp"
+            android:gravity="center"
+            android:lineSpacingExtra="20sp"
+            android:lineSpacingMultiplier="0"
+            android:maxLines="2"
+            android:text="@string/error_has_occured"
+            android:textSize="14sp"
 
-            <FrameLayout
-                android:id="@+id/inputExchange"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:layout_marginBottom="24dp"
-                android:background="#FFFFFF">
+            android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/inputExchangeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="USD"
-                    android:textColor="@color/background"
-                    android:textSize="24sp" />
-
-            </FrameLayout>
-
-            <FrameLayout
-                android:id="@+id/inputValue"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:background="#FFFFFF">
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:boxBackgroundMode="none"
-                    app:hintEnabled="false">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/textInputText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:inputType="number|numberDecimal"
-                        android:text="1"
-                        android:textColor="@color/background"
-                        android:textSize="24sp" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-            </FrameLayout>
-
-        </LinearLayout>
-
-        <ImageView
-            android:id="@+id/swipeButton"
+        <Button
+            android:id="@+id/buttonRefresh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="0.2"
-            app:srcCompat="@drawable/swap_icon" />
+            android:lineSpacingExtra="20sp"
+            android:lineSpacingMultiplier="0"
+            android:text="@string/try_again"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mainContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/lastUpdateText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:text="Last update on Apr 25, 2016 at 2.40 PM"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <FrameLayout
+            android:id="@+id/reloadButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/reload_button_background"
+            app:cardCornerRadius="10dp">
+
+            <ImageView
+                android:id="@+id/reloadIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginBottom="8dp"
+                app:srcCompat="@drawable/reload_button_icon" />
+        </FrameLayout>
 
         <LinearLayout
-            android:id="@+id/outputContainer"
-            android:layout_width="64dp"
+            android:id="@+id/exchangeContainer"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.4"
-            android:orientation="vertical">
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="horizontal"
+            android:weightSum="1">
 
-            <FrameLayout
-                android:id="@+id/outputExchange"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:layout_marginBottom="24dp"
-                android:background="#FFFFFF">
+            <LinearLayout
+                android:id="@+id/inputContainer"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/outputExchangeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="USD"
-                    android:textColor="@color/background"
-                    android:textSize="24sp" />
+                <FrameLayout
+                    android:id="@+id/inputExchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="#FFFFFF">
 
-            </FrameLayout>
+                    <ProgressBar
+                        android:id="@+id/inputExchangeProgress"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
 
-            <FrameLayout
-                android:id="@+id/outputValue"
-                android:layout_width="match_parent"
-                android:layout_height="64dp"
-                android:background="#FFFFFF">
+                    <TextView
+                        android:id="@+id/inputExchangeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="USD"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
 
-                <TextView
-                    android:id="@+id/outputValueText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="..."
-                    android:textColor="@color/background"
-                    android:textSize="24sp" />
+                </FrameLayout>
 
-            </FrameLayout>
+                <FrameLayout
+                    android:id="@+id/inputValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:background="#FFFFFF">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:boxBackgroundMode="none"
+                        app:hintEnabled="false">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/textInputText"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:inputType="number|numberDecimal"
+                            android:text="1"
+                            android:textColor="@color/background"
+                            android:textSize="24sp" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </FrameLayout>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/swipeButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="0.2"
+                app:srcCompat="@drawable/swap_icon" />
+
+            <LinearLayout
+                android:id="@+id/outputContainer"
+                android:layout_width="64dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.4"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/outputExchange"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:layout_marginBottom="24dp"
+                    android:background="#FFFFFF">
+
+                    <ProgressBar
+                        android:id="@+id/outputExchangeProgress"
+                        style="?android:attr/progressBarStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/outputExchangeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="USD"
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/outputValue"
+                    android:layout_width="match_parent"
+                    android:layout_height="64dp"
+                    android:background="#FFFFFF">
+
+                    <TextView
+                        android:id="@+id/outputValueText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="..."
+                        android:textColor="@color/background"
+                        android:textSize="24sp" />
+
+                </FrameLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:indeterminateTint="#44C9FD"
+            android:visibility="gone" />
     </LinearLayout>
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:indeterminateTint="#44C9FD"
-        android:visibility="gone" />
 
-
-</LinearLayout>
+</androidx.cardview.widget.CardView>

@@ -16,28 +16,13 @@ import javax.inject.Singleton
 
 @Singleton
 class DefaultCurrencyRepository @Inject constructor(
-    @ApplicationContext private val appContext: Context,
     private val retrofitConfig: RetrofitConfig
 ) : BaseRetrofitSource(retrofitConfig.moshi), CurrencyRepository {
 
     private val currencyApi = retrofitConfig.retrofit.create(CurrencyApi::class.java)
 
-    override fun getAllCurrencies(): List<String> {
-        val inputStream = appContext.resources.openRawResource(R.raw.common_currency)
-        val bytes = ByteArray(inputStream.available())
-
-        inputStream.read(bytes)
-
-        val currencies = ArrayList<String>()
-        val jsonCurrencies = JSONObject(String(bytes)).names()
-
-        if (jsonCurrencies != null) {
-            for (i in 0 until jsonCurrencies.length()) {
-                currencies.add(jsonCurrencies.getString(i))
-            }
-        }
-
-        return currencies
+    override suspend fun getAllCurrencies(): List<String> {
+        return currencyApi.getAllowCurrencies(BuildConfig.EXCHANGE_RATES_KEY).symbols.keys.toList()
     }
 
     override suspend fun convertCurrency(
