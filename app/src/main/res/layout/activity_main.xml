@@ -91,7 +91,7 @@
                         android:layout_height="match_parent"
                         android:gravity="center"
                         android:inputType="number|numberDecimal"
-                        android:text="128.35"
+                        android:text="1"
                         android:textColor="@color/background"
                         android:textSize="24sp" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -101,7 +101,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/swapButton"
+            android:id="@+id/swipeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
@@ -144,7 +144,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="3.513"
+                    android:text="..."
                     android:textColor="@color/background"
                     android:textSize="24sp" />
 
@@ -153,6 +153,15 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:indeterminateTint="#44C9FD"
+        android:visibility="gone" />
 
 
 </LinearLayout>

@@ -4,10 +4,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.appcompat.widget.PopupMenu
+import androidx.core.view.isVisible
+import com.example.moneymate.R
 import com.example.moneymate.databinding.ActivityMainBinding
+import com.example.moneymate.presentation.models.ErrorContainer
+import com.example.moneymate.presentation.models.PendingContainer
+import com.example.moneymate.presentation.models.takeSuccess
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,10 +30,20 @@ class MainActivity : AppCompatActivity() {
         observe()
     }
 
+    private fun getInputValue() : Float = with(binding){
+        return textInputText.text.toString().toFloat()
+    }
+
     private fun onClickListeners() = with(binding) {
         reloadButton.setOnClickListener {
-            viewModel.convertCurrency(textInputText.text.toString().toFloat())
+            viewModel.convertCurrency(getInputValue())
         }
+
+        swipeButton.setOnClickListener {
+            viewModel.swipe()
+            viewModel.convertCurrency(getInputValue())
+        }
+
         inputExchange.addShowingCurrenciesMenu { viewModel.setInputExchange(it) }
         outputExchange.addShowingCurrenciesMenu { viewModel.setOutputExchange(it) }
     }
@@ -38,8 +53,16 @@ class MainActivity : AppCompatActivity() {
             inputExchangeText.text = it.inputExchange
             outputExchangeText.text = it.outputExchange
         }
-        viewModel.exchangeValue.observe(this@MainActivity) {
-            outputValueText.text = it.toString()
+        viewModel.exchangeValue.observe(this@MainActivity) { result ->
+
+            progressBar.isVisible = result is PendingContainer
+            outputValueText.text = (result.takeSuccess() ?: getString(R.string.load_text)).toString()
+            if (result is ErrorContainer){
+                showSnackbar(getString(R.string.error_try_to_refresh, result.error.message))
+            }
+            if (result is PendingContainer){
+                showSnackbar(getString(R.string.currency_is_transferring))
+            }
         }
     }
 
@@ -57,6 +80,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         popupMenu.show()
+    }
+
+    private fun showSnackbar(message: String){
+        Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
 }
