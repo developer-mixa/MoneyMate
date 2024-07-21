@@ -8,4 +8,7 @@
     <string name="undefined">---</string>
     <string name="empty" />
     <string name="last_update_on">Last update on %1$s</string>
+    <string name="usd">USD</string>
+    <string name="transfer_currency">transfer currency</string>
+    <string name="swap_currencies">swap currencies</string>
 </resources>
