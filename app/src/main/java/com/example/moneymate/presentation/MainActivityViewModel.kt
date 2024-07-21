@@ -72,7 +72,7 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun swipe() {
+    fun swap() {
         _exchange.value = _exchange.value?.copy(
             inputExchange = _exchange.value!!.outputExchange,
             outputExchange = _exchange.value!!.inputExchange

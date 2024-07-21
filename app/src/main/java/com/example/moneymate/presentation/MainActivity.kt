@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         swipeButton.setOnClickListener {
-            viewModel.swipe()
+            viewModel.swap()
             viewModel.convertCurrency(getInputValue())
         }
 
