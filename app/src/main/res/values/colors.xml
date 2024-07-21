@@ -5,4 +5,6 @@
     <color name="background">#1C7ADF</color>
     <color name="reload_button_background_default">#1D7EE8</color>
     <color name="reload_button_background_tap">#2266B1</color>
+    <color name="base_background">#579DE8</color>
+    <color name="progress_bar_color">#44C9FD</color>
 </resources>
