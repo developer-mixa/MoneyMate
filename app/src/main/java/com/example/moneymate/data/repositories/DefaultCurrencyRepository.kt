@@ -7,6 +7,7 @@ import com.example.moneymate.data.utils.BaseRetrofitSource
 import com.example.moneymate.data.utils.InvalidCurrencyException
 import com.example.moneymate.domain.CurrencyApi
 import com.example.moneymate.domain.CurrencyRepository
+import java.math.RoundingMode
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -30,6 +31,12 @@ class DefaultCurrencyRepository @Inject constructor(
         val currencyValue = currencyResponse.rates[to] ?: throw InvalidCurrencyException(
             "There is no such currency: $to"
         )
-        return@wrapRetrofitExceptions Currency(currencyValue * value, currencyResponse.date)
+
+        val roundedCurrency = (currencyValue * value)
+            .toBigDecimal()
+            .setScale(2, RoundingMode.FLOOR)
+            .toFloat()
+
+        return@wrapRetrofitExceptions Currency(roundedCurrency, currencyResponse.date)
     }
 }
