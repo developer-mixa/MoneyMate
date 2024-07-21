@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.moneymate.data.models.Currency
 import com.example.moneymate.domain.CurrencyRepository
 import com.example.moneymate.presentation.models.Container
 import com.example.moneymate.presentation.models.ErrorContainer
@@ -23,8 +24,8 @@ class MainActivityViewModel @Inject constructor(
     private val _exchange: MutableLiveData<Exchange> = MutableLiveData(Exchange.DEFAULT)
     val exchange: LiveData<Exchange> = _exchange
 
-    private val _exchangeValue: MutableLiveData<Container<Float>> = MutableLiveData()
-    val exchangeValue: LiveData<Container<Float>> = _exchangeValue
+    private val _exchangeValue: MutableLiveData<Container<Currency>> = MutableLiveData()
+    val exchangeValue: LiveData<Container<Currency>> = _exchangeValue
 
     private val _allowCurrencies: MutableLiveData<Container<List<String>>> = MutableLiveData()
     val allowCurrencies: LiveData<Container<List<String>>> = _allowCurrencies

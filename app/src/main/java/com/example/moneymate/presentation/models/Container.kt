@@ -11,7 +11,3 @@ class ErrorContainer<T>(
 ) : Container<T>()
 
 class PendingContainer<T> : Container<T>()
-
-fun <T> Container<T>.takeSuccess() : T?{
-    return if (this is SuccessContainer) this.value else null
-}

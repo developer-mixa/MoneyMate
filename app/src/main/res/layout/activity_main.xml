@@ -63,7 +63,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:gravity="center_horizontal"
-            android:text="Last update on Apr 25, 2016 at 2.40 PM"
             android:textColor="@color/white"
             android:textSize="16sp" />
 

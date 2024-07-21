@@ -5,4 +5,7 @@
     <string name="currency_is_transferring">The currency is being transferred, wait a little...</string>
     <string name="error_has_occured">Error has occured</string>
     <string name="try_again">Try again...</string>
+    <string name="undefined">---</string>
+    <string name="empty" />
+    <string name="last_update_on">Last update on %1$s</string>
 </resources>

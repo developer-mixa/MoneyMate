@@ -2,12 +2,10 @@ package com.example.moneymate.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.view.View
 import android.widget.ArrayAdapter
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.widget.PopupMenu
 import androidx.core.view.isVisible
 import com.example.moneymate.R
 import com.example.moneymate.databinding.ActivityMainBinding
@@ -15,7 +13,6 @@ import com.example.moneymate.databinding.ChooseCurrencyDialogBinding
 import com.example.moneymate.presentation.models.ErrorContainer
 import com.example.moneymate.presentation.models.PendingContainer
 import com.example.moneymate.presentation.models.SuccessContainer
-import com.example.moneymate.presentation.models.takeSuccess
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -36,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         observe()
     }
 
-    private fun getInputValue() : Float = with(binding){
+    private fun getInputValue(): Float = with(binding) {
         return textInputText.text.toString().toFloat()
     }
 
@@ -58,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         outputExchange.addShowingCurrenciesMenu { viewModel.setOutputExchange(it) }
     }
 
-    private fun observe() = with(binding){
+    private fun observe() = with(binding) {
         viewModel.exchange.observe(this@MainActivity) {
             inputExchangeText.text = it.inputExchange
             outputExchangeText.text = it.outputExchange
@@ -67,18 +64,30 @@ class MainActivity : AppCompatActivity() {
         viewModel.exchangeValue.observe(this@MainActivity) { result ->
 
             progressBar.isVisible = result is PendingContainer
-            outputValueText.text = (result.takeSuccess() ?: getString(R.string.load_text)).toString()
-            if (result is ErrorContainer){
-                showSnackbar(getString(R.string.error_try_to_refresh, result.error.message))
-            }
-            if (result is PendingContainer){
-                showSnackbar(getString(R.string.currency_is_transferring))
+
+            when (result) {
+                is SuccessContainer -> {
+                    outputValueText.text = result.value.amount.toString()
+                    lastUpdateText.text = getString(R.string.last_update_on, result.value.date)
+                }
+
+                is ErrorContainer -> {
+                    outputValueText.text = getString(R.string.undefined)
+                    lastUpdateText.text = getString(R.string.empty)
+                    showSnackbar(getString(R.string.error_try_to_refresh, result.error.message))
+                }
+
+                is PendingContainer -> {
+                    outputValueText.text = getString(R.string.load_text)
+                    lastUpdateText.text = getString(R.string.load_text)
+                    showSnackbar(getString(R.string.currency_is_transferring))
+                }
             }
         }
 
         viewModel.allowCurrencies.observe(this@MainActivity) { result ->
 
-            if(result is SuccessContainer){
+            if (result is SuccessContainer) {
                 setupAdapter(result.value)
             }
 
@@ -93,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         showCurrencyDialog(onTap)
     }
 
-    private fun setupAdapter(currencies: List<String>){
+    private fun setupAdapter(currencies: List<String>) {
         currenciesAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_list_item_1,
@@ -102,7 +111,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-    private fun showCurrencyDialog(onTap: (String) -> Unit){
+    private fun showCurrencyDialog(onTap: (String) -> Unit) {
         val dialogBinding = ChooseCurrencyDialogBinding.inflate(layoutInflater)
 
         val dialog = AlertDialog.Builder(this)
@@ -123,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun showSnackbar(message: String){
+    private fun showSnackbar(message: String) {
         Snackbar.make(binding.root, message, Snackbar.LENGTH_SHORT).show()
     }
 
